@@ -10,15 +10,16 @@ import Attendance from "@/components/pages/Attendance";
 const StudentModal = ({ student, isOpen, onClose, onSave, onEdit, isEditing: isEditingProp, grades = [], attendance = [] }) => {
   const [activeTab, setActiveTab] = useState("profile");
   const [isEditing, setIsEditing] = useState(isEditingProp || false);
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
     gradeLevel: '',
     class: '',
+    science: '',
     status: 'Active',
-    photo: '',
+    enrollmentDate: new Date().toISOString().split('T')[0],
     parentContact: {
       name: '',
       phone: '',
@@ -32,15 +33,16 @@ React.useEffect(() => {
     if (isOpen) {
       setIsEditing(isEditingProp || false);
       if (student) {
-        setFormData({
+setFormData({
           firstName: student.firstName || '',
           lastName: student.lastName || '',
           email: student.email || '',
           phone: student.phone || '',
           gradeLevel: student.gradeLevel || '',
           class: student.class || '',
+          science: student.science || '',
           status: student.status || 'Active',
-          photo: student.photo || '',
+          enrollmentDate: student.enrollmentDate || new Date().toISOString().split('T')[0],
           parentContact: {
             name: student.parentContact?.name || '',
             phone: student.parentContact?.phone || '',
@@ -48,15 +50,16 @@ React.useEffect(() => {
           }
         });
       } else {
-        setFormData({
+setFormData({
           firstName: '',
           lastName: '',
           email: '',
           phone: '',
           gradeLevel: '',
           class: '',
+          science: '',
           status: 'Active',
-          photo: '',
+          enrollmentDate: new Date().toISOString().split('T')[0],
           parentContact: {
             name: '',
             phone: '',
@@ -93,11 +96,11 @@ const [parent, child] = field.split('.');
   };
 
   const handleCancel = () => {
-    if (student) {
+if (student) {
       setIsEditing(false);
     } else {
       onClose();
-}
+    }
   };
 
   const getStatusVariant = (status) => {
@@ -356,10 +359,25 @@ const [parent, child] = field.split('.');
                         type="text"
                         value={formData.class}
                         onChange={(e) => handleInputChange('class', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                         placeholder="10-A"
                       />
                     </div>
+<div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Science
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.science}
+                        onChange={(e) => handleInputChange('science', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                        placeholder="Physics"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Status
@@ -415,8 +433,8 @@ const [parent, child] = field.split('.');
                           onChange={(e) => handleInputChange('parentContact.email', e.target.value)}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                           placeholder="parent@example.com"
-                        />
-</div>
+/>
+                      </div>
                     </div>
                   </div>
                 </div>
